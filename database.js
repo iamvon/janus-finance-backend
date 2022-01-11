@@ -28,9 +28,9 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
     console.log('Mongo Database Disconnected');
     process.exit(0);
   });
-  const models = Glob.sync('models/*.js');
+  const models = Glob.sync('models/*.model.js');
   models.forEach((model) => {
-    require(`../${model}`);
+    require(`./${model}`);
   });
 });
 
