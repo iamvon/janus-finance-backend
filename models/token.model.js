@@ -11,6 +11,7 @@ const TokenSchema = new Schema(
         address: {
             type: String,
             unique: true,
+            index: true,
             default: ""
         },
         symbol: {
@@ -30,18 +31,15 @@ const TokenSchema = new Schema(
             type: String,
             default: ""
         },
-        tag: [{
-            type: String,
-            index: true
-        }],
-        extensions: [{
-            name: {
-                type: String
-            },
-            value: {
-                type: String
-            }
-        }]
+        tag: {
+            type: [String],
+            index: true,
+            default: []
+        },
+        extensions: {
+            type: Object,
+            default: {}
+        }
     },
     { timestamps: true }
 )

@@ -28,12 +28,7 @@ const handleGetToken = async () => {
                 decimals: token.decimals,
                 logoURI: token.logoURI,
                 tag: token.tags ? token.tags : [],
-                extensions: token.extensions ? Object.keys(token.extensions).map(key => {
-                    return {
-                        name: key,
-                        value: token.extensions[key]
-                    }
-                }) : []
+                extensions: token.extensions ? token.extensions : {}
             }}, { upsert: true, new: true }, (err, doc, raw) => {
                 if(err) console.log(err)
                 if(index % 100 === 0) console.log(index)
@@ -54,7 +49,7 @@ const recursiveFunc = async () => {
     console.log("Task is running every 10 minutes " + new Date())
     await dbConnect()
     await handleGetToken()
-    await new Promise(res => setTimeout(res, 1000*60*30))
+    await new Promise(res => setTimeout(res, 1000*60*10))
     recursiveFunc()
 }
     
