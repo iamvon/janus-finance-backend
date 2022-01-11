@@ -30,4 +30,24 @@ services:
     networks:
       - production
     restart: always
-
+  fetch-solana-token:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: fetch-solana-token
+    container_name: fetch-solana-token
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    network_mode: "host"
+    networks:
+      - production
+    command: node .\cronJob\getSolanaToken.js
