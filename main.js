@@ -29,6 +29,7 @@ const dbConnect = () => {
     db
         .connect(urlConnection)
         .then((msg) => {
+            console.log(msg);
             console.log('MongoDB Url: ', MONGODB_IP);
         }).catch((err) => {
             console.log({error: err.message});
