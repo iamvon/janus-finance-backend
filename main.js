@@ -20,6 +20,8 @@ const {
 
 const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
 
+console.log(urlConnection)
+
 const app = express();
 const server = require('http').Server(app);
 
@@ -27,7 +29,6 @@ const dbConnect = () => {
     db
         .connect(urlConnection)
         .then((msg) => {
-            console.log(msg);
             console.log('MongoDB Url: ', MONGODB_IP);
         }).catch((err) => {
             console.log({error: err.message});

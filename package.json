@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app/index.js --legacy-watch",
-    "start-test": "nodemon --inspect=0.0.0.0:9229 app/index.js --legacy-watch",
-    "start:prod": "NODE_ENV=production nodemon app/index.js --legacy-watch"
+    "start": "nodemon index.js --legacy-watch",
+    "start-test": "nodemon --inspect=0.0.0.0:9229 index.js --legacy-watch",
+    "start:prod": "NODE_ENV=production node index.js --legacy-watch"
   },
   "author": "",
   "license": "ISC",
