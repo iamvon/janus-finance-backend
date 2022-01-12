@@ -8,7 +8,7 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
     useUnifiedTopology: true,
   })
     .then((b) => {
-      // console.log(b);
+      console.log(b);
     })
     .catch((err) => {
       console.log(err)
@@ -22,7 +22,7 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
     });
   });
   Mongoose.connection.on('connected', () => {
-    console.log('mongoose connected')
+    // console.log('mongoose connected')
     resolve('Mongo Database connected');
   });
   Mongoose.connection.on('disconnected', () => {
