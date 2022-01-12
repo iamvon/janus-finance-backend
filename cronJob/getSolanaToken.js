@@ -41,7 +41,6 @@ const handleGetToken = async () => {
 
 const dbConnect = async () => {
     const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
-    console.log(urlConnection)
     const res = await db.connect(urlConnection)
     console.log(res)
 }
@@ -49,7 +48,7 @@ const dbConnect = async () => {
 const recursiveFunc = async () => {
     console.log("Task is running every 10 minutes " + new Date())
     await dbConnect()
-    // await handleGetToken()
+    await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     recursiveFunc()
 }
