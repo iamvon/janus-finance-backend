@@ -9,26 +9,28 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
   })
     .then((b) => {
       console.log(b);
+      resolve("connected")
     })
     .catch((err) => {
       console.log(err)
-      if (err) throw err.message;
+      resolve("ERROR")
+      // if (err) throw err.message;
     });
   
-  process.on('SIGINT', () => {
-    Mongoose.connection.close(() => {
-      console.log('Mongo Database disconnected through app termination');
-      process.exit(0);
-    });
-  });
-  Mongoose.connection.on('connected', () => {
-    // console.log('mongoose connected')
-    resolve('Mongo Database connected');
-  });
-  Mongoose.connection.on('disconnected', () => {
-    console.log('Mongo Database Disconnected');
-    process.exit(0);
-  });
+  // process.on('SIGINT', () => {
+  //   Mongoose.connection.close(() => {
+  //     console.log('Mongo Database disconnected through app termination');
+  //     process.exit(0);
+  //   });
+  // });
+  // Mongoose.connection.on('connected', () => {
+  //   // console.log('mongoose connected')
+  //   resolve('Mongo Database connected');
+  // });
+  // Mongoose.connection.on('disconnected', () => {
+  //   console.log('Mongo Database Disconnected');
+  //   process.exit(0);
+  // });
   const models = Glob.sync('models/*.model.js');
   models.forEach((model) => {
     require(`./${model}`);
