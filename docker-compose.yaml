@@ -43,4 +43,4 @@ services:
       - API_PREFIX
     networks:
       - production
-    command: node .\cronJob\getSolanaToken.js
+    command: node ./cronJob/getSolanaToken.js
