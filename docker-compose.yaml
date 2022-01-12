@@ -20,7 +20,7 @@ services:
       - PROJECT_NAME
       - API_PREFIX
     ports:
-      - ${PORT}:${PORT}
+      - 2999:2999
     networks:
       - production
     restart: always
