@@ -6,12 +6,6 @@ networks:
 
 services:
   server:
-    deploy:
-      resources:
-        limits:
-          memory: ${MEMORY_LIMIT}
-        reservations:
-          memory: ${MEMORY_RESERVATIONS}
     image: janus/server:latest
     build:
       context: ./
@@ -26,7 +20,7 @@ services:
       - PROJECT_NAME
       - API_PREFIX
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - ${PORT}:${PORT}
     networks:
       - production
     restart: always
