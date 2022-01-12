@@ -19,11 +19,10 @@ services:
       - PORT
       - PROJECT_NAME
       - API_PREFIX
-    ports:
-      - ${PORT}:${PORT}
     networks:
       - production
     restart: always
+
   fetch-solana-token:
     build:
       context: ./
