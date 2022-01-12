@@ -41,7 +41,6 @@ services:
       - PORT
       - PROJECT_NAME
       - API_PREFIX
-    network_mode: "host"
     networks:
       - production
     command: node .\cronJob\getSolanaToken.js
