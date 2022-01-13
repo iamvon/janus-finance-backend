@@ -40,8 +40,7 @@ services:
       - PORT
       - PROJECT_NAME
       - API_PREFIX
-    networks:
-      - production
+    network_mode: "host"
     command: node ./cronJob/getSolanaToken.js
  
   fetch-wormhole-token:
@@ -61,6 +60,5 @@ services:
       - PORT
       - PROJECT_NAME
       - API_PREFIX
-    networks:
-      - production
+    network_mode: "host"
     command: node ./cronJob/getWormholeToken.js
