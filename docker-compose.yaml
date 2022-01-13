@@ -43,3 +43,24 @@ services:
     networks:
       - production
     command: node ./cronJob/getSolanaToken.js
+ 
+  fetch-wormhole-token:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: fetch-wormhole-token
+    container_name: fetch-wormhole-token
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    networks:
+      - production
+    command: node ./cronJob/getWormholeToken.js
