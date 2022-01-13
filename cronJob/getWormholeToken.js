@@ -64,7 +64,6 @@ const handleGetWormholeToken = async () => {
 const dbConnect = async () => {
     const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`
     const res = await db.connect(urlConnection)
-    console.log(res.data)
 }
 
 const recursiveFunc = async () => {
