@@ -47,6 +47,8 @@ const TokenSchema = new Schema(
     { timestamps: true }
 )
 
+TokenSchema.index({name: 'text', address: 'text', symbol: 'text'});
+
 const Token = mongoose.model("Solana", TokenSchema, "Solana");
 
 module.exports = Token;
