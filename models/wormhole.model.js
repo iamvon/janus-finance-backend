@@ -7,7 +7,8 @@ const WormholeToken = new Schema(
         symbol: {
             type: String,
             default: "",
-            index: true
+            index: true,
+            unique: true
         },
         logo: {
             type: String,

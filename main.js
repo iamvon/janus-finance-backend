@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const  db = require('./database');
 const morgan = require('morgan');
+const tokenRouter = require('./routers/token')
 
 const {
     MONGODB_USER, 
@@ -48,6 +49,7 @@ const initApi = () => {
     app.use((err, req, res, next) => {
         res.json({error: errMes.e ?? 'Error !!!'});
     });
+    app.use('/token', tokenRouter)
     console.log('Bootstrap ending time', new Date());
 }
 

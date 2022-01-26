@@ -28,7 +28,7 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
   });
   Mongoose.connection.on('disconnected', () => {
     console.log('Mongo Database Disconnected');
-    process.exit(0);
+    // process.exit(0);
   });
   const models = Glob.sync('models/*.model.js');
   models.forEach((model) => {
@@ -38,6 +38,6 @@ module.exports.connect = (mongoUri) => new Promise((resolve, reject) => {
 
 module.exports.close = () => new Promise((resolve, reject) => {
   Mongoose.connection.close(() => {
-    resolve();
+    resolve()
   });
 });

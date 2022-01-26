@@ -3,6 +3,7 @@ const { TokenListProvider } = require('@solana/spl-token-registry')
 const axios = require('axios')
 const TokenModel = require('../models/token.model')
 const WormholeTokenModel = require('../models/wormhole.model')
+
 const db = require('../database')
 const {
     MONGODB_USER, 
@@ -31,6 +32,7 @@ const handleGetWormholeToken = async () => {
     const listMarket = res.data["markets"]
     const listTokenMarket = res.data["tokenMarkets"]
     const listToken = res.data["tokens"]
+    
     Object.keys(listTokenMarket).forEach(id => {
         const list = listTokenMarket[id]['1']
         curTokenList = listToken[id] 
@@ -46,7 +48,7 @@ const handleGetWormholeToken = async () => {
                         name: listMarket[sl].name
                     }
                 })
-                WormholeTokenModel.findOneAndUpdate({hash: curHash}, { $setOnInsert: {
+                WormholeTokenModel.findOneAndUpdate({symbol: symbol}, { $setOnInsert: {
                     hash: curHash,
                     symbol: symbol,
                     logo: logo,
