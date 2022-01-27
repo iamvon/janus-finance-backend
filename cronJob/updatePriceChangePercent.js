@@ -25,6 +25,7 @@ const updatePriceChangePercent = async () => {
     }
     const items = await SolanaToken
         .find(query)
+        .sort({lastChangePercentUpdated: 1})
         // .limit(BATCH_SIZE)
         .lean()
 
