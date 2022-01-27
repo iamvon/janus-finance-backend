@@ -60,7 +60,37 @@ const TokenSchema = new Schema(
         lastChangePercentUpdated: {
             type: Date,
             index: true,
-        }
+        },
+        isTopTrending: {
+            type: Boolean,
+            index: true,
+            default: false
+        },
+        topTrendingRank: {
+            type: Number,
+            index: true,
+            default: 0
+        },
+        isTopBuy: {
+            type: Boolean,
+            index: true,
+            default: false
+        },
+        topBuyRank: {
+            type: Number,
+            index: true,
+            default: 0
+        },
+        isTopSell: {
+            type: Boolean,
+            index: true,
+            default: false
+        },
+        topSellRank: {
+            type: Number,
+            index: true,
+            default: 0
+        },
     },
     {timestamps: true}
 )
