@@ -1,6 +1,6 @@
 const cron = require('node-cron')
 const {getModel} = require("../models")
-const {getCoinGeckoChange} = require("../library/getCoinChangePercent")
+const {getCoinGeckoChange} = require("../library/coingecko")
 const Promise = require('bluebird')
 
 const _store = {

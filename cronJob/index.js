@@ -5,4 +5,6 @@ module.exports = async () => {
     console.log('Jobs started')
 
     require('./updatePriceChangePercent')
+    require('./updateTopTrending')
+    require('./updateTopTransaction')
 }
