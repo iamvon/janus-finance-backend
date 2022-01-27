@@ -18,11 +18,15 @@ function rateLimitDelay(ms) {
 
 const updateTopTransaction = async () => {
     const SolanaToken = getModel("solana.model")
-    await SolanaToken.updateMany({isTopSell: true}, {$set: {isTopSell: false, topSellRank: 0}})
-    await SolanaToken.updateMany({isTopBuy: true}, {$set: {isTopBuy: false, topBuyRank: 0}})
 
     const {topBuy, topSell} = await getJupiterTopTransaction()
 
+    if (topSell.length > 0) {
+        await SolanaToken.updateMany({isTopSell: true}, {$set: {isTopSell: false, topSellRank: 0}})
+    }
+    if (topBuy.length > 0) {
+        await SolanaToken.updateMany({isTopBuy: true}, {$set: {isTopBuy: false, topBuyRank: 0}})
+    }
     // console.log("Items", items)
 
     await Promise.map(topSell, async (item, index) => {

@@ -17,13 +17,17 @@ function rateLimitDelay(ms) {
 
 const updateTopTrending = async () => {
     const SolanaToken = getModel("solana.model")
-    await SolanaToken.updateMany({isTopTrending: true}, {$set: {isTopTrending: false, topTrendingRank: 0}})
 
-    const items = await getCoinGeckoTrendingSearch()
+    const coingeckoTrends = await getCoinGeckoTrendingSearch()
+    const solscanTrends = await getSolscanTrendingSearch()
+
+    if (coingeckoTrends.length + solscanTrends.length > 8) {
+        await SolanaToken.updateMany({isTopTrending: true}, {$set: {isTopTrending: false, topTrendingRank: 0}})
+    }
 
     // console.log("Items", items)
 
-    await Promise.map(items, async (item, index) => {
+    await Promise.map(coingeckoTrends, async (item, index) => {
         try {
             const coinInfo = await getCoinInfoFromId(item.id)
             const address = coinInfo.platforms.solana
@@ -42,8 +46,6 @@ const updateTopTrending = async () => {
             console.log("Set top Trending Error: ", error)
         }
     }, {concurrency: 4})
-
-    const solscanTrends = await getSolscanTrendingSearch()
 
     // console.log("Items", solscanTrends)
 
@@ -67,8 +69,8 @@ const updateTopTrending = async () => {
     return true
 }
 
-// 5 minutes
-module.exports = cron.schedule("*/5 * * * *", async () => {
+// 3 minutes
+module.exports = cron.schedule("*3 * * * *", async () => {
     if (_store.isRunning) return true
     _store.isRunning = true
 
