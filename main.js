@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const  db = require('./database');
 const morgan = require('morgan');
 const tokenRouter = require('./routers/token')
+const startJobs = require('./cronJob')
 
 const {
     MONGODB_USER, 
@@ -56,10 +57,11 @@ const initApi = () => {
 module.exports = () => {
     return Promise.all([dbConnect(), initApi()])
         .then(() => {
-            server.listen(PORT, (err) => {
+            server.listen(PORT, async (err) => {
                 if (err) throw err;
                 console.log(`${PROJECT_NAME} server is listening on port ${PORT}`);
                 console.log(new Date());
+                await startJobs()
             });
         }).catch(err => {
             console.log('Something wrong!', err);

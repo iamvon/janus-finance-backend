@@ -42,9 +42,27 @@ const TokenSchema = new Schema(
         extensions: {
             type: Object,
             default: {}
+        },
+        changePercent: {
+            t24h: {
+                type: Number,
+                index: true,
+            },
+            t7d: {
+                type: Number,
+                index: true,
+            },
+            t1m: {
+                type: Number,
+                index: true,
+            },
+        },
+        lastChangePercentUpdated: {
+            type: Date,
+            index: true,
         }
     },
-    { timestamps: true }
+    {timestamps: true}
 )
 
 TokenSchema.index({name: 'text', address: 'text', symbol: 'text'});
