@@ -70,7 +70,7 @@ const updateTopTrending = async () => {
 }
 
 // 3 minutes
-module.exports = cron.schedule("*3 * * * *", async () => {
+module.exports = cron.schedule("*/3 * * * *", async () => {
     if (_store.isRunning) return true
     _store.isRunning = true
 
