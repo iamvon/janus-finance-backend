@@ -23,9 +23,9 @@ const handleGetToken = async () => {
 
     poolList.forEach((pool, index) => {
         // console.log(pool.fee_24h)
-        PoolModel.findOneAndUpdate({liquidity_pool: pool.lp_mint}, {
+        PoolModel.findOneAndUpdate({liquidity_pool: pool.amm_id}, {
             platform: "Raydium",
-            liquidity_pool: pool.lp_mint,
+            liquidity_pool: pool.amm_id,
             liquidity: pool.liquidity,
             volume: pool.volume_24h,
             lp_fee: pool.fee_24h,
