@@ -11,6 +11,12 @@ const TokenSchema = new Schema(
         price: {
             type: Number
         },
+        marketcap: {
+            type: Number
+        },
+        volume: {
+            type: Number
+        },
         address: {
             type: String,
             unique: true,
