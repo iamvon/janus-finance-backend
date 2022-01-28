@@ -13,7 +13,7 @@ const {
     API_PREFIX
 } = process.env
 
-console.log(`mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`)
+// console.log(`mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`)
 
 const handleGetToken = async () => {
     console.log("Start fetching solana metadata")
@@ -23,10 +23,8 @@ const handleGetToken = async () => {
             const projects = data.pageProps.projects
             const projectSlugs = projects.map(project => project.frontmatter.slug)
             const urls = projectSlugs.map(slug => `https://solana.com/_next/data/fwilZeE-MEIdzWAVPXj6t/en/ecosystem/${slug}.json`)
-            Promise.all(urls.slice(0, 200).map(url => {
-                return axios.get(encodeURI(url))
-            })).then(results => {
-                results.forEach((result, index) => {
+            urls.forEach((url, index) => {
+                axios.get(encodeURI(url)).then(result => {
                     const {data, status} = result
                     const meta = data?.pageProps?.project
                     if (meta) {
@@ -38,13 +36,13 @@ const handleGetToken = async () => {
                             ...metaDataBySlug
                         }, { upsert: true, new: true }, (err, doc, raw) => {
                             if(err) console.log(err)
-                            if(index % 100 === 0) console.log(index)
-                            if(index === results.length - 1) console.log("Total solana meta inserted: ", index + 1)
+                            // if(index % 100 === 0) console.log(index)
+                            if(index === urls.length - 1) console.log("Total solana meta inserted: ", index + 1)
                         })
                     }
+                }).catch(err => {
+                    console.log("Not found:", err.config.url);
                 })
-            }).catch(err => {
-                console.log(err);
             })
         } else {
             console.log('Maybe fetch catch error some where')
