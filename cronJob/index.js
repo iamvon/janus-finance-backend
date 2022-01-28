@@ -7,4 +7,5 @@ module.exports = async () => {
     require('./updatePriceChangePercent')
     require('./updateTopTrending')
     require('./updateTopTransaction')
+    require('./updateJupiterSupportToken')
 }

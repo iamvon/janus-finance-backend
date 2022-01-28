@@ -91,6 +91,11 @@ const TokenSchema = new Schema(
             index: true,
             default: 0
         },
+        isJupiterSupport: {
+            type: Boolean,
+            index: true,
+            default: false
+        },
     },
     {timestamps: true}
 )

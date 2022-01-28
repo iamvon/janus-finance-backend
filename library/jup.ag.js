@@ -1,5 +1,6 @@
 const axios = require('axios');
 
+
 const getJupiterTopTransaction = async () => {
     try {
         const url = `https://stats.jup.ag/info/day`
@@ -22,6 +23,24 @@ const getJupiterTopTransaction = async () => {
     }
 };
 
+const getJupiterSupportTokens = async () => {
+    try {
+        const {TOKEN_LIST_URL} = require('@jup-ag/core')
+        const mainnetAPI = TOKEN_LIST_URL['mainnet-beta']
+        const priceResp = await axios({
+            method: 'GET',
+            timeout: 5000,
+            url: mainnetAPI
+        })
+
+        return priceResp.data
+    } catch (error) {
+        console.log('getJupiterSupportTokens ERROR', error.message)
+        return 0
+    }
+}
+
 module.exports = {
     getJupiterTopTransaction,
+    getJupiterSupportTokens
 }
