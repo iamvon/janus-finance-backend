@@ -20,31 +20,35 @@ const {
 
 const handleGetToken = async () => {
     console.log("Start fetching Solana tokens")
-    const tokens = await new TokenListProvider().resolve()
+    const [tokens, {data: listCoingeckoToken}] = await Promise.all([new TokenListProvider().resolve(), axios.get('https://api.coingecko.com/api/v3/coins/list?asset_platform_id=solana')])
     
     const tokenList = tokens.filterByClusterSlug('mainnet-beta').getList();
     
     const listTag = []
 
     console.log("Total Solana token need to import: ", tokenList.length);
+    console.log("Total Coingecko token: ", listCoingeckoToken.length);
     
     //fetch price from coingecko
-    const listSymbol = []
+    const listSymbol = listCoingeckoToken.map(t => t.id)
     tokenList.forEach(t => {
-        if(t.extensions && t.extensions.coingeckoId) listSymbol.push(t.extensions.coingeckoId)
+        if(t.extensions && t.extensions.coingeckoId && !listSymbol.find(s => s == t.extensions.coingeckoId)) listSymbol.push(t.extensions.coingeckoId)
     })
+
     console.log(listSymbol.length)
     const interval = 50
-    let objPrice = {}
+    let arrayPrice = []
     for(let i = 0; i <= Math.floor(listSymbol.length/interval); i++){
         const newListSymbol = listSymbol.slice(i*interval, (i+1)*interval)
         // console.log(i, newListSymbol.length)
         const newString = newListSymbol.join(',')
-        const {data: listPrice} = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${newString}&vs_currencies=usd&cb=${Date.now()}`)
+        const {data: listPrice} = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${newString}&per_page=100&page=1&sparkline=false&cb=${Date.now()}`)
+        
 
-        // console.log(listPrice)
-        objPrice = {...objPrice, ...listPrice}
-        console.log("List object price: ", Object.keys(objPrice).length)
+        // console.log(listPrice.length)
+        arrayPrice = arrayPrice.concat(listPrice)
+
+        console.log("List object price: ", arrayPrice.length)
     }
 
     //insert token data + price to mongodb
@@ -55,6 +59,8 @@ const handleGetToken = async () => {
                 listTag.push(t)
             } 
         })
+        const tokenData = arrayPrice.find(t => t.id == coingeckoId || (t.name === token.name && t.symbol === token.symbol))
+
         SolanaModel.findOneAndUpdate({address: token.address}, {
             chainId: token.chainId,
             address: token.address,
@@ -62,7 +68,9 @@ const handleGetToken = async () => {
             name: token.name,
             decimals: token.decimals,
             logoURI: token.logoURI,
-            price: objPrice[coingeckoId] && objPrice[coingeckoId]['usd'] ? objPrice[coingeckoId]['usd'] : 0,
+            price: tokenData ? tokenData['current_price'] : 0,
+            marketcap: tokenData ? tokenData['market_cap'] : 0,
+            volume: tokenData ? tokenData['total_volume'] : 0,
             tag: token.tags ? token.tags : [],
             extensions: token.extensions ? token.extensions : {}
         }, { upsert: true, new: true }, (err, doc, raw) => {
