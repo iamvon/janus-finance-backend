@@ -33,7 +33,7 @@ const handleGetToken = async () => {
             apy: pool.apy
         }, { upsert: true, new: true }, (err, doc, raw) => {
             if(err) console.log(err)
-            if(index % 100 === 0) console.log(index)
+            // if(index % 100 === 0) console.log(index)
             if(index === poolList.length - 1) console.log("Total Raydium pool inserted: ", index + 1)
         })
     })
@@ -45,12 +45,12 @@ const dbConnect = async () => {
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
-    await dbConnect()
+    console.log("Task get Raydium Pool is running every 10 minutes " + new Date())
+    // await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     await db.close()
     recursiveFunc()
 }
     
-recursiveFunc()    
+module.exports = recursiveFunc()

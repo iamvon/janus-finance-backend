@@ -35,7 +35,7 @@ const handleGetToken = async () => {
         if(t.extensions && t.extensions.coingeckoId && !listSymbol.find(s => s == t.extensions.coingeckoId)) listSymbol.push(t.extensions.coingeckoId)
     })
 
-    console.log(listSymbol.length)
+    // console.log(listSymbol.length)
     const interval = 50
     let arrayPrice = []
     for(let i = 0; i <= Math.floor(listSymbol.length/interval); i++){
@@ -48,7 +48,7 @@ const handleGetToken = async () => {
         // console.log(listPrice.length)
         arrayPrice = arrayPrice.concat(listPrice)
 
-        console.log("List object price: ", arrayPrice.length)
+        // console.log("List object price: ", arrayPrice.length)
     }
 
     //insert token data + price to mongodb
@@ -59,7 +59,7 @@ const handleGetToken = async () => {
                 listTag.push(t)
             } 
         })
-        const tokenData = arrayPrice.find(t => t.id == coingeckoId || (t.name === token.name && t.symbol === token.symbol))
+        const tokenData = arrayPrice.find(t => t.id == coingeckoId || (t.name.toLowerCase() === token.name.toLowerCase() && t.symbol.toLowerCase() === token.symbol.toLowerCase()))
 
         SolanaModel.findOneAndUpdate({address: token.address}, {
             chainId: token.chainId,
@@ -75,7 +75,7 @@ const handleGetToken = async () => {
             extensions: token.extensions ? token.extensions : {}
         }, { upsert: true, new: true }, (err, doc, raw) => {
             if(err) console.log(err)
-            if(index % 100 === 0) console.log(index)
+            // if(index % 100 === 0) console.log(index)
             if(index === tokenList.length - 1) console.log("Total Solana token inserted: ", index + 1)
         })
     })
@@ -90,66 +90,19 @@ const handleGetToken = async () => {
     // let url = "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?limit=1000&tagSlugs=solana-ecosystem"
 }
 
-// const handleGetToken = async () => {
-//     console.log("Start fetching Solana tokens")
-//     let url = "https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?limit=1000&tagSlugs=solana-ecosystem"
-
-//     axios.get(url).then(async res => {
-
-//         const listTag = []
-
-//         const tokenList = res.data['data']['cryptoCurrencyList']
-
-//         console.log("Total Solana token need to import: ", tokenList.length);
-//         let listSymbol = tokenList.map(t => t.symbol)
-//         listSymbol = listSymbol.join(',')
-//         const listData = await getCoinData(listSymbol)
-//         console.log(listData.length)
-//         // console.log(res)
-//         tokenList.forEach((token, index) => {
-//             const curTokenData = listData.find(d => d.symbol === token.symbol)
-//             if(curTokenData && curTokenData.category){
-//                 if(!listTag.find(t1 => t1 === curTokenData.category)){
-//                     listTag.push(curTokenData.category)
-//                 }
-//             }
-//             // console.log(token.quotes[0].price)
-//             TokenModel.findOneAndUpdate({cid: token.id}, { 
-//                 cid: token.id,
-//                 symbol: token.symbol,
-//                 name: token.name,
-//                 slug: token.slug,
-//                 price: token.quotes[0].price,
-//                 tag: curTokenData ? curTokenData.category : token.tags,
-//             }, { upsert: true, new: true }, (err, doc, raw) => {
-//                 if(err) console.log(err)
-//                 if(index % 10 === 0) console.log(index)
-//                 if(index === tokenList.length - 1) console.log("Total Solana token inserted: ", index + 1)
-//             })
-//             // newToken.save().then()
-//         })
-//         console.log("Total tag need to import: ", listTag.length)
-//         listTag.forEach((tag, index) => {
-//             TagModel.findOneAndUpdate({name: tag}, { $setOnInsert: { name: tag }}, {upsert: true, new: true}, (err, doc, raw) => {
-//                 if(index === listTag.length - 1) console.log(`Imported ${index + 1} tags`)
-//             })
-//         })
-//     });
-// }
-
 const dbConnect = async () => {
     const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
     const res = await db.connect(urlConnection)
-    
+    console.log(res)
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
-    await dbConnect()
+    console.log("Task get Solana token is running every 10 minutes " + new Date())
+    // await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     await db.close()
     recursiveFunc()
 }
     
-recursiveFunc()    
+module.exports = recursiveFunc()
