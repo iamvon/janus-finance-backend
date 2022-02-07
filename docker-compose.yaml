@@ -62,3 +62,83 @@ services:
       - API_PREFIX
     network_mode: "host"
     command: node ./cronJob/getWormholeToken.js
+  
+  fetch-solana-meta:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: fetch-solana-meta
+    container_name: fetch-solana-meta
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    network_mode: "host"
+    command: node ./cronJob/getSolanaMeta.js
+  
+  get-aldrin-pool:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: get-aldrin-pool
+    container_name: get-aldrin-pool
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    network_mode: "host"
+    command: node ./cronJob/getAldrinPool.js
+  
+  get-orca-pool:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: get-orca-pool
+    container_name: get-orca-pool
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    network_mode: "host"
+    command: node ./cronJob/getOrcaPool.js
+  
+  get-Raydium-pool:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: get-Raydium-pool
+    container_name: get-Raydium-pool
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGODB_USER
+      - MONGODB_PASS
+      - MONGODB_DATABASE
+      - MONGODB_IP
+      - MONGODB_PORT
+      - PORT
+      - PROJECT_NAME
+      - API_PREFIX
+    network_mode: "host"
+    command: node ./cronJob/getRaydiumPool.js
