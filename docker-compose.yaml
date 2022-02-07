@@ -123,12 +123,12 @@ services:
     network_mode: "host"
     command: node ./cronJob/getOrcaPool.js
   
-  get-Raydium-pool:
+  get-raydium-pool:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: get-Raydium-pool
-    container_name: get-Raydium-pool
+    image: get-raydium-pool
+    container_name: get-raydium-pool
     restart: unless-stopped
     env_file: .env
     environment:
