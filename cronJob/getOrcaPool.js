@@ -34,7 +34,7 @@ const handleGetToken = async () => {
             apy: pool.apy.week != "NaN" ? pool.apy.week : 0
         }, { upsert: true, new: true }, (err, doc, raw) => {
             if(err) console.log(err)
-            // if(index % 10 === 0) console.log(index)
+            if(index % 10 === 0) console.log(index)
             if(index === Object.keys(poolList).length - 1) console.log("Total Orca pool inserted: ", index + 1)
         })
     })
@@ -46,12 +46,12 @@ const dbConnect = async () => {
 }
 
 const recursiveFunc = async () => {
-    console.log("Task get Orca pool is running every 10 minutes " + new Date())
-    // await dbConnect()
+    console.log("Task is running every 10 minutes " + new Date())
+    await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     await db.close()
     recursiveFunc()
 }
     
-module.exports = recursiveFunc()
+recursiveFunc()    

@@ -48,7 +48,7 @@ const handleGetToken = async () => {
             console.log('Maybe fetch catch error some where')
         }
     } catch (error) {
-        // console.log(error)
+        console.log(error)
     }
 }
 const dbConnect = async () => {
@@ -58,12 +58,12 @@ const dbConnect = async () => {
 }
 
 const recursiveFunc = async () => {
-    console.log("Task get Solana meta is running every 10 minutes " + new Date())
-    // await dbConnect()
+    console.log("Task is running every 10 minutes " + new Date())
+    await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     await db.close()
     recursiveFunc()
 }
     
-module.exports = recursiveFunc()
+recursiveFunc()    

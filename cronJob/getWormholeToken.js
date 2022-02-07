@@ -3,8 +3,6 @@ const { TokenListProvider } = require('@solana/spl-token-registry')
 const axios = require('axios')
 const TokenModel = require('../models/token.model')
 const WormholeTokenModel = require('../models/wormhole.model')
-const Promise = require('bluebird')
-const cron = require('node-cron')
 
 const db = require('../database')
 const {
@@ -67,17 +65,15 @@ const handleGetWormholeToken = async () => {
 
 const dbConnect = async () => {
     const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`
-    console.log(urlConnection)
     const res = await db.connect(urlConnection)
-    console.log(res)
 }
 
 const recursiveFunc = async () => {
-    console.log("Task get Wormhole token is running every 10 minutes " + new Date())
-    // await dbConnect()
+    console.log("Task is running every 10 minutes " + new Date())
+    await dbConnect()
     await handleGetWormholeToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     recursiveFunc()
 }
     
-module.exports = recursiveFunc() 
+recursiveFunc()    
