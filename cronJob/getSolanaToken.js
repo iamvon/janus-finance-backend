@@ -144,10 +144,10 @@ const dbConnect = async () => {
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
+    console.log("Task is running every 5 minutes " + new Date())
     await dbConnect()
     await handleGetToken()
-    await new Promise(res => setTimeout(res, 1000*60*10))
+    await new Promise(res => setTimeout(res, 1000*60*5))
     await db.close()
     recursiveFunc()
 }

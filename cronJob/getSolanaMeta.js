@@ -18,11 +18,11 @@ const {
 const handleGetToken = async () => {
     console.log("Start fetching solana metadata")
     try {
-        const {status, data} = await axios.get('https://solana.com/_next/data/fwilZeE-MEIdzWAVPXj6t/en/ecosystem.json')
+        const {status, data} = await axios.get('https://solana.com/_next/data/vyYJ2GMVDSaj4c0b-p81w/en/ecosystem.json')
         if (status === 200) {
             const projects = data.pageProps.projects
             const projectSlugs = projects.map(project => project.frontmatter.slug)
-            const urls = projectSlugs.map(slug => `https://solana.com/_next/data/fwilZeE-MEIdzWAVPXj6t/en/ecosystem/${slug}.json`)
+            const urls = projectSlugs.map(slug => `https://solana.com/_next/data/vyYJ2GMVDSaj4c0b-p81w/en/ecosystem/${slug}.json`)
             urls.forEach((url, index) => {
                 axios.get(encodeURI(url)).then(result => {
                     const {data, status} = result
@@ -36,7 +36,7 @@ const handleGetToken = async () => {
                             ...metaDataBySlug
                         }, { upsert: true, new: true }, (err, doc, raw) => {
                             if(err) console.log(err)
-                            // if(index % 100 === 0) console.log(index)
+                            if(index % 100 === 0) console.log(index)
                             if(index === urls.length - 1) console.log("Total solana meta inserted: ", index + 1)
                         })
                     }
@@ -48,7 +48,7 @@ const handleGetToken = async () => {
             console.log('Maybe fetch catch error some where')
         }
     } catch (error) {
-        console.log(error)
+        console.log("Solana token is expired:", error.config.url);
     }
 }
 const dbConnect = async () => {
