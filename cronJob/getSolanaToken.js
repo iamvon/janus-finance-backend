@@ -44,16 +44,15 @@ const handleGetToken = async () => {
         const newString = newListSymbol.join(',')
         try{
             const {data: listPrice} = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${newString}&per_page=100&page=1&sparkline=false&cb=${Date.now()}`)
+       
+            // console.log(listPrice.length)
+            arrayPrice = arrayPrice.concat(listPrice)
+
+            console.log("List object price: ", arrayPrice.length)
         }
         catch(e) {
             console.log(e)
         }
-        
-
-        // console.log(listPrice.length)
-        arrayPrice = arrayPrice.concat(listPrice)
-
-        console.log("List object price: ", arrayPrice.length)
     }
 
     //insert token data + price to mongodb
