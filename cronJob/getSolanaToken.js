@@ -42,7 +42,12 @@ const handleGetToken = async () => {
         const newListSymbol = listSymbol.slice(i*interval, (i+1)*interval)
         // console.log(i, newListSymbol.length)
         const newString = newListSymbol.join(',')
-        const {data: listPrice} = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${newString}&per_page=100&page=1&sparkline=false&cb=${Date.now()}`)
+        try{
+            const {data: listPrice} = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${newString}&per_page=100&page=1&sparkline=false&cb=${Date.now()}`)
+        }
+        catch(e) {
+            console.log(e)
+        }
         
 
         // console.log(listPrice.length)
