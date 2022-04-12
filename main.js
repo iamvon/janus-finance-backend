@@ -20,7 +20,8 @@ const {
     API_PREFIX
 } = process.env
 
-const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
+const urlConnection = `mongodb://${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
+// const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
 
 console.log(urlConnection)
 

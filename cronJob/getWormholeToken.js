@@ -64,16 +64,16 @@ const handleGetWormholeToken = async () => {
 }
 
 const dbConnect = async () => {
-    const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`
+    const urlConnection = `mongodb://${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`
     const res = await db.connect(urlConnection)
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
-    await dbConnect()
+    console.log("Task getWormholeToken is running every 10 minutes " + new Date())
+    // await dbConnect()
     await handleGetWormholeToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
     recursiveFunc()
 }
-    
-recursiveFunc()    
+
+module.exports = recursiveFunc()

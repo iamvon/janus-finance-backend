@@ -18,11 +18,12 @@ const {
 const handleGetToken = async () => {
     console.log("Start fetching solana metadata")
     try {
-        const {status, data} = await axios.get('https://solana.com/_next/data/vyYJ2GMVDSaj4c0b-p81w/en/ecosystem.json')
+        const solUrl = "https://solana.com/_next/data/_sHt1xqc_Rj65xfWdLJi7/en"
+        const {status, data} = await axios.get(`${solUrl}/ecosystem.json`)
         if (status === 200) {
             const projects = data.pageProps.projects
             const projectSlugs = projects.map(project => project.frontmatter.slug)
-            const urls = projectSlugs.map(slug => `https://solana.com/_next/data/vyYJ2GMVDSaj4c0b-p81w/en/ecosystem/${slug}.json`)
+            const urls = projectSlugs.map(slug => `${solUrl}/ecosystem/${slug}.json`)
             urls.forEach((url, index) => {
                 axios.get(encodeURI(url)).then(result => {
                     const {data, status} = result
@@ -52,18 +53,18 @@ const handleGetToken = async () => {
     }
 }
 const dbConnect = async () => {
-    const urlConnection = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
+    const urlConnection = `mongodb://${MONGODB_IP}:${MONGODB_PORT}/${MONGODB_DATABASE}`;
     const res = await db.connect(urlConnection)
     
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
-    await dbConnect()
+    console.log("Task getSolanaMeta is running every 10 minutes " + new Date())
+    // await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
-    await db.close()
+    // await db.close()
     recursiveFunc()
 }
     
-recursiveFunc()    
+module.exports = recursiveFunc()

@@ -46,12 +46,12 @@ const dbConnect = async () => {
 }
 
 const recursiveFunc = async () => {
-    console.log("Task is running every 10 minutes " + new Date())
-    await dbConnect()
+    console.log("Task getOrcaPool is running every 10 minutes " + new Date())
+    // await dbConnect()
     await handleGetToken()
     await new Promise(res => setTimeout(res, 1000*60*10))
-    await db.close()
+    // await db.close()
     recursiveFunc()
 }
     
-recursiveFunc()    
+module.exports = recursiveFunc()
